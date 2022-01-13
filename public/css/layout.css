@@ -1,0 +1,84 @@
+.botonera {
+  margin: 20px auto;
+  max-width: 80%;
+  display: flex;
+  gap: 10px;
+}
+
+.botonera .button {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: 0;
+  background: var(--color-primary);
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.botonera .button:first-child {
+  background: var(--color-success);
+}
+
+.historial h5 {
+  text-align: center;
+  margin: 0;
+}
+
+.historial table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.historial table th {
+  background: #2d038f;
+  color: #fff;
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+
+.historial table td {
+  padding: 10px;
+  text-align: center;
+}
+
+.historial table td table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 auto;
+  font-size: small;
+}
+
+.historial table td table td {
+  padding: 3px;
+  text-align: center;
+}
+
+.scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 300px;
+  margin: 20px auto;
+}
+
+/* media queries */
+
+@media (max-width: 767px) {
+  .historial > .scroll > table > thead > tr > th:last-child {
+    display: none;
+  }
+
+  .historial > .scroll > table > tbody > tr > td:last-child {
+    display: none;
+  }
+}

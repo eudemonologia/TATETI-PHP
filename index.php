@@ -1,95 +1,62 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+session_start();
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TA-TE-TI</title>
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/index.css">
-</head>
+// Verificar que se haya completado el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Tomar los nombres de los jugadores
+    $player1 = ucwords(strtolower($_POST["player1"]));
+    $player2 = ucwords(strtolower($_POST["player2"]));
+    // Verificar que los nombres de los jugadores no esten vacios
+    if ($player1 == "" || $player2 == "") {
+        header("Location: index.php?error=Debes ingresar los nombres de los jugadores.");
+
+        // Verificar que los nombres de los jugadores no sean iguales
+    } else if ($player1 == $player2) {
+        header("Location: index.php?error=Los nombres de los jugadores no pueden ser iguales.");
+
+        // Verificar que los nombres no superan los 10 caracteres
+    } else if (strlen($player1) > 10 || strlen($player2) > 10) {
+        header("Location: index.php?error=Los nombres de los jugadores no pueden superar los 10 caracteres.");
+
+        // Guardar los nombres de los jugadores en sesion
+    } else {
+        $_SESSION["player1"] = $player1;
+        $_SESSION["player2"] = $player2;
+        // Redireccionar a la página de juego
+        header("Location: game.php");
+    }
+} else {
+    // Destruir la sesion en caso de que no se esté utilizando el formulario
+    session_destroy();
+}
+
+include './layout/head.php';
+?>
 
 <body>
     <main class="card">
-        <h1>¡Bienvenido al TA-TE-TI!</h1>
-        <div class="game">
-            <?php if (!isset($_GET["game"])) {
-                $turn = "X";
-                $game = array(
-                    "0" => "-",
-                    "1" => "-",
-                    "2" => "-",
-                    "3" => "-",
-                    "4" => "-",
-                    "5" => "-",
-                    "6" => "-",
-                    "7" => "-",
-                    "8" => "-"
-                );
-                for ($i = 0; $i < 9; $i++) {
-                    $url = "";
-                    for ($j = 0; $j < 9; $j++) {
-                        if ($j == $i) {
-                            $url .= $turn;
-                        } else {
-                            $url .= $game[$j];
-                        }
-                    }
-                    echo "<a href='?turn=$turn&game=$url' class='box'>$game[$i]</a>";
-                }
-            } else {
-                if (isset($_GET["turn"])) {
-                    if ($_GET["turn"] == "X") {
-                        $turn = "O";
-                    } else {
-                        $turn = "X";
-                    }
-                }
-                if (isset($_GET["game"])) {
-                    $game = $_GET["game"];
-                }
-                $game = str_split($game);
-                for ($i = 0; $i < 9; $i++) {
-                    if ($game[$i] == "-") {
-                        $url = "";
-                        for ($j = 0; $j < 9; $j++) {
-                            if ($j == $i && $game[$j] == "-") {
-                                $url .= $turn;
-                            } else {
-                                $url .= $game[$j];
-                            }
-                        }
-                        echo "<a href='?turn=$turn&game=$url' class='box'>$game[$i]</a>";
-                    } else {
-                        echo "<div class='box'>$game[$i]</div>";
-                    }
-                }
-                if (!strstr($_GET["game"], "-")) { ?>
-                    <div class="mensaje">
-                        <h2>¡Juego terminado!</h2>
-                        <a href="?">Volver a iniciar</a>
-                    </div>
-                    <?php } else {
-                    if ($turn == "X") { ?>
-                        <div class="mensaje">
-                            <h2>¡Es el turno de X!</h2>
-                            <a href="?">Volver a iniciar</a>
-                        </div>
-                    <?php } else { ?>
-                        <div class="mensaje">
-                            <h2>¡Es el turno de O!</h2>
-                            <a href="?">Volver a iniciar</a>
-                        </div>
-            <?php }
-                }
-            }
-            ?>
-
-        </div>
-        <small>Todos los derechos reservados a Cristian Diego Góngora Pabón</small>
+        <h1>¡Bienvenido al <span class="nowrap-text">TA-TE-TI!</span></h1>
+        <?php if (isset($_GET["error"])) {
+            echo "<p class='error'> " . $_GET["error"] . "</p>";
+        } ?>
+        <form action="" method="POST" class="form">
+            <!-- Tomar el nombre del primer y segundo jugador -->
+            <div class="input">
+                <label for="player1">Nombre del primer jugador</label>
+                <input type="text" id="player1" name="player1" placeholder="Nombre del primer jugador" required>
+            </div>
+            <div class="input">
+                <label for="player2">Nombre del segundo jugador</label>
+                <input type="text" id="player2" name="player2" placeholder="Nombre del segundo jugador" required>
+            </div>
+            <div class="botonera">
+                <button class="button" type="submit">Jugar</button>
+                <a class="button" href="historial.php">Historial</a>
+            </div>
+        </form>
     </main>
-
 </body>
 
-</html>
+<?php
+include './layout/footer.php';
+?>
