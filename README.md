@@ -1,6 +1,6 @@
 # TA-TE-TI en PHP
 
-Un versión muy sencilla del Ta-Te-Ti o tres en linea en PHP y SQLite.
+Una versión muy sencilla del Ta-Te-Ti o tres en linea en PHP y SQLite.
 
 ## Versión en linea
 
